@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý Ôn Thi 2025 - Galaxy Theme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap'); /* For clock */
+
+        /* --- GALAXY COLOR PALETTE --- */
+        :root {
+            --galaxy-dark1: #0d1117;  /* Deep dark blue/black - Main background */
+            --galaxy-dark2: #1a233a;  /* Darker blue-purple - Section/Modal backgrounds */
+            --galaxy-mid1: #2c3e50;   /* Mid blue-grey - Secondary buttons, borders */
+            --galaxy-purple1: #4e3a6d; /* Deep purple - Accents, gradients */
+            --galaxy-purple2: #8e44ad; /* Brighter purple - Accents, gradients */
+            --galaxy-blue1: #3498db;   /* Bright blue - Primary accent, buttons, links */
+            --galaxy-pink1: #c0399f;   /* Cosmic pink/magenta - Danger/delete buttons, accents */
+            --galaxy-light1: #ecf0f1;  /* Very light grey/white - Primary text */
+            --galaxy-light2: #bdc3c7;  /* Light grey - Dim text, placeholders */
+            --galaxy-glow: rgba(100, 180, 255, 0.2); /* Subtle blue glow */
+            --galaxy-text: var(--galaxy-light1);
+            --galaxy-text-dim: var(--galaxy-light2);
+            --galaxy-text-header: #ffffff; /* Pure white for main headers */
+
+            /* Subject Specific Colors (Galaxy Themed) */
+            --subject-math-color: #0ea5e9; /* Sky Blue */
+            --subject-math-glow: rgba(14, 165, 233, 0.5);
+            --subject-math-bg-tint: rgba(14, 165, 233, 0.15);
+            --subject-literature-color: #10b981; /* Emerald Green */
+            --subject-literature-glow: rgba(16, 185, 129, 0.5);
+            --subject-literature-bg-tint: rgba(16, 185, 129, 0.15);
+            --subject-english-color: #f59e0b; /* Amber */
+            --subject-english-glow: rgba(245, 158, 11, 0.5);
+            --subject-english-bg-tint: rgba(245, 158, 11, 0.15);
+            --subject-informatics-color: #8b5cf6; /* Violet */
+            --subject-informatics-glow: rgba(139, 92, 246, 0.5);
+            --subject-informatics-bg-tint: rgba(139, 92, 246, 0.15);
+            --subject-other-color: var(--galaxy-light2); /* Dim Grey for 'Other' */
+            --subject-other-bg-tint: rgba(189, 195, 199, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--galaxy-dark1);
+            background-image:
+                radial-gradient(circle at 30% 70%, rgba(78, 58, 109, 0.5) 0%, transparent 50%), /* Purple nebula */
+                radial-gradient(circle at 80% 20%, rgba(52, 152, 219, 0.4) 0%, transparent 40%), /* Blue nebula */
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 10%), /* faint center */
+                linear-gradient(160deg, var(--galaxy-dark1) 0%, #111827 40%, #1a233a 100%); /* Base dark gradient */
+            background-attachment: fixed;
+            color: var(--galaxy-text);
+            scroll-behavior: smooth;
+        }
+
+        /* Tab Interface Styles */
+        .tab-button.active {
+            background-color: rgba(52, 152, 219, 0.2); /* Blue tint */
+            border-bottom-color: var(--galaxy-blue1);
+            color: var(--galaxy-light1);
+            font-weight: 600;
+        }
+        .tab-button {
+            border-bottom: 3px solid transparent; /* Default transparent border */
+             transition: all 0.3s ease;
+             color: var(--galaxy-text-dim);
+             padding: 0.75rem 1rem; /* consistent padding */
+             white-space: nowrap;
+        }
+        .tab-button:hover:not(.active) {
+             background-color: rgba(255, 255, 255, 0.05);
+             color: var(--galaxy-light1);
+        }
+        .tab-panel {
+            animation: fadeIn 0.5s ease-out; /* Fade in panels */
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+
+        /* --- GALAXY THEME COMPONENTS --- */
+
+        .galaxy-container { /* Main content area container - REMOVED, sections directly styled */
+             margin-top: 1.5rem;
+             margin-bottom: 1.5rem;
+        }
+        .galaxy-section { /* Individual sections within the main container */
+            background-color: rgba(26, 35, 58, 0.75); /* Darker section bg with more opacity */
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0.75rem; /* 12px */
+            padding: 1.25rem; /* p-5 */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            color: var(--galaxy-text);
+        }
+         .galaxy-section:hover {
+             border-color: rgba(52, 152, 219, 0.4); /* Brighter blue border on hover */
+         }
+
+         /* Text & Headers */
+        h1, h2, h3, h4, h5, h6 { color: var(--galaxy-text-header); }
+        p, span, div { color: var(--galaxy-text); /* Default text color */}
+        .text-dim { color: var(--galaxy-text-dim) !important; } /* Helper class */
+
+        /* Buttons */
+        .btn-primary { background-color: var(--galaxy-blue1); color: white; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2), 0 0 8px rgba(52, 152, 219, 0.3); border-radius: 6px; padding: 0.5rem 1rem;}
+        .btn-primary:hover { background-color: #2980b9; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.5); }
+        .btn-secondary { background-color: var(--galaxy-mid1); color: var(--galaxy-light1); transition: all 0.3s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.15); border-radius: 6px; padding: 0.5rem 1rem;}
+        .btn-secondary:hover { background-color: #3b5169; }
+         .btn-danger { background-color: var(--galaxy-pink1); color: white; border-radius: 6px; padding: 0.5rem 1rem; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2), 0 0 8px rgba(192, 57, 159, 0.3);}
+         .btn-danger:hover { background-color: #a52d8a; box-shadow: 0 4px 10px rgba(192, 57, 159, 0.5); }
+         .btn-warning { background-color: #f39c12; color: #1f2937; border-radius: 6px; padding: 0.5rem 1rem; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-weight: 500;} /* Amber alternative */
+         .btn-warning:hover { background-color: #d35400; }
+         .btn-success { background-color: #27ae60; color: white; border-radius: 6px; padding: 0.5rem 1rem; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2);} /* Emerald alternative */
+         .btn-success:hover { background-color: #1e8449; }
+         /* General button disable style */
+         button:disabled, .btn-disabled { opacity: 0.5; cursor: not-allowed !important; box-shadow: none !important;}
+
+         .btn-icon { background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 0.5rem; transition: all 0.2s ease; color: var(--galaxy-text-dim); }
+         .btn-icon:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.08); color: var(--galaxy-light1); border-color: rgba(255, 255, 255, 0.2); }
+
+         /* Clock */
+         .clock-box {
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+         }
+         #current-time {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: #ffffff; /* Bright time */
+            text-shadow: 0 0 8px rgba(52, 152, 219, 0.6); /* Enhanced Blue glow */
+         }
+         #current-date { color: var(--galaxy-text-dim); }
+
+        /* Progress Bars */
+         .progress-bar-bg { background-color: rgba(255, 255, 255, 0.1); border-radius: 9999px; height: 8px; overflow: hidden;}
+         .progress-bar-inner { height: 100%; border-radius: 9999px; transition: width 0.5s ease; } /* Default gradient removed, set per subject */
+
+        /* Subject-Specific Progress Bars */
+        .subject-math .progress-bar-inner { background-image: linear-gradient(90deg, #38bdf8, var(--subject-math-color)); box-shadow: 0 0 8px var(--subject-math-glow); }
+        .subject-literature .progress-bar-inner { background-image: linear-gradient(90deg, #34d399, var(--subject-literature-color)); box-shadow: 0 0 8px var(--subject-literature-glow); }
+        .subject-english .progress-bar-inner { background-image: linear-gradient(90deg, #fbbf24, var(--subject-english-color)); box-shadow: 0 0 8px var(--subject-english-glow); }
+        .subject-informatics .progress-bar-inner { background-image: linear-gradient(90deg, #a78bfa, var(--subject-informatics-color)); box-shadow: 0 0 8px var(--subject-informatics-glow); }
+
+        /* Progress Card (Small top ones) */
+         .progress-card {
+            background-color: rgba(26, 35, 58, 0.7); /* Consistent with galaxy-section */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+             border-radius: 0.75rem; padding: 1rem; /* Slightly less padding */
+             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+             transition: all 0.3s ease;
+         }
+         .progress-card:hover {
+             border-color: rgba(52, 152, 219, 0.4);
+             transform: translateY(-3px);
+             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+         }
+         .progress-card .progress-percent {
+            font-weight: 500; padding: 0.15rem 0.5rem; border-radius: 9999px; font-size: 0.7rem;
+             background-color: rgba(0,0,0,0.3); /* Darker badge bg */
+         }
+        /* Subject-Specific Progress Card Percent Badge */
+        .subject-math .progress-percent { color: var(--subject-math-color); background-color: var(--subject-math-bg-tint); }
+        .subject-literature .progress-percent { color: var(--subject-literature-color); background-color: var(--subject-literature-bg-tint); }
+        .subject-english .progress-percent { color: var(--subject-english-color); background-color: var(--subject-english-bg-tint); }
+        .subject-informatics .progress-percent { color: var(--subject-informatics-color); background-color: var(--subject-informatics-bg-tint); }
+
+        /* Task Card */
+         .subject-card {
+            transition: all 0.3s ease; border-radius: 10px; border-left-width: 4px;
+            background-color: rgba(44, 62, 80, 0.6); /* Dark blue-grey bg */
+            border-color: transparent; /* Left border set by subject */
+             position: relative; box-shadow: 0 2px 5px rgba(0,0,0, 0.15);
+             border: 1px solid rgba(255, 255, 255, 0.07); /* Subtle overall border */
+         }
+        .subject-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+            border-color: rgba(255, 255, 255, 0.15); /* Slightly brighter border on hover */
+        }
+         .subject-card .subject-title { font-weight: 600; }
+         .subject-card .task-description { color: var(--galaxy-text-dim); }
+        .subject-card .time-info { color: #9ab5d0; } /* Lighter dim blue */
+        .subject-card .time-info i { opacity: 0.7; }
+        .subject-card .time-info .text-gray-700 { color: #6a88a5 !important;} /* Separator color */
+
+         .subject-tag { font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 9999px; font-weight: 500; line-height: 1.2; }
+        /* Subject Specific Card Border, Title Color, and Tag BG/Text (Galaxy Theme) */
+         .subject-math { border-left-color: var(--subject-math-color); }
+         .subject-math .subject-title { color: var(--subject-math-color); }
+         .subject-math .subject-tag { background-color: var(--subject-math-bg-tint); color: var(--subject-math-color); }
+         .subject-literature { border-left-color: var(--subject-literature-color); }
+         .subject-literature .subject-title { color: var(--subject-literature-color); }
+         .subject-literature .subject-tag { background-color: var(--subject-literature-bg-tint); color: var(--subject-literature-color); }
+        .subject-english { border-left-color: var(--subject-english-color); }
+        .subject-english .subject-title { color: var(--subject-english-color); }
+         .subject-english .subject-tag { background-color: var(--subject-english-bg-tint); color: var(--subject-english-color); }
+        .subject-informatics { border-left-color: var(--subject-informatics-color); }
+         .subject-informatics .subject-title { color: var(--subject-informatics-color); }
+        .subject-informatics .subject-tag { background-color: var(--subject-informatics-bg-tint); color: var(--subject-informatics-color); }
+         .subject-other { border-left-color: var(--subject-other-color); }
+        .subject-other .subject-title { color: var(--subject-other-color); }
+        .subject-other .subject-tag { background-color: var(--subject-other-bg-tint); color: var(--subject-other-color); }
+
+         .subject-card.completed {
+            background-color: rgba(44, 62, 80, 0.4); /* Dim completed tasks */
+            border-left-color: #27ae60; /* Keep green border for completed status */
+            opacity: 0.7;
+         }
+         .completed .subject-title, .completed .task-description { text-decoration: line-through; color: #7f8c8d; } /* Greyed out text */
+         .completed .time-info, .completed .time-info i, .completed .time-info .text-gray-700 { color: #64748b !important; opacity: 0.8; } /* Dim icon color */
+         .completed .complete-btn i { color: #27ae60 !important; } /* Ensure checkmark remains green */
+
+
+        /* Calendar */
+        .calendar-day { transition: background-color 0.2s ease, box-shadow 0.2s ease;}
+        .calendar-day.active { background-color: var(--galaxy-blue1); color: white; font-weight: 600; box-shadow: 0 0 10px rgba(52, 152, 219, 0.5); }
+        .calendar-day:not(.active):hover { background-color: rgba(255, 255, 255, 0.1); }
+        .calendar-day.other-month { color: var(--galaxy-text-dim); opacity: 0.4; pointer-events: none; }
+
+        /* Notes */
+        .note-item { transition: background-color 0.2s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.07); padding: 0.8rem 0.5rem; }
+         .note-item:hover { background-color: rgba(255, 255, 255, 0.03); }
+        .note-item .note-delete-btn { opacity: 0; transition: opacity 0.2s ease; color: var(--galaxy-pink1); }
+         .note-item:hover .note-delete-btn { opacity: 1; }
+        .note-item .note-checkbox { filter: hue-rotate(180deg) brightness(1.5); accent-color: var(--galaxy-blue1); cursor: pointer;}
+         .note-item p { line-height: 1.5; color: var(--galaxy-text);}
+         .note-item .note-text.line-through { color: var(--galaxy-text-dim);} /* Applied dynamically by JS if needed */
+         .note-item.opacity-60 .note-text { color: var(--galaxy-text-dim); text-decoration: line-through; } /* Style completed notes */
+         .note-item .subject-tag { margin-top: 0.25rem; }
+         .note-item .text-gray-400 { color: #8798ae !important; } /* Date text */
+         #notes-list { max-height: 250px; overflow-y: auto; padding-right: 5px;}
+         #notes-list::-webkit-scrollbar { width: 6px; }
+         #notes-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 3px;}
+        #notes-list::-webkit-scrollbar-thumb { background: var(--galaxy-mid1); border-radius: 3px;}
+        #notes-list::-webkit-scrollbar-thumb:hover { background: var(--galaxy-blue1); }
+
+
+        /* Inputs and Selects */
+         input[type="text"], input[type="file"], textarea, select {
+            background-color: rgba(13, 17, 23, 0.8); /* Darker input bg */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--galaxy-light1);
+            border-radius: 6px;
+            padding: 0.5rem 0.75rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+         }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--galaxy-blue1);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3); /* Slightly larger focus ring */
+        }
+        textarea { resize: vertical; min-height: 60px; }
+        select { appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23bdc3c7' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; padding-right: 2.5rem; }
+        select option { background-color: var(--galaxy-dark2); color: var(--galaxy-light1); }
+        ::placeholder { color: var(--galaxy-text-dim); opacity: 0.6; }
+
+
+        /* Modal */
+        .modal { background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); }
+         .modal-content {
+            background-color: var(--galaxy-dark2);
+             border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly brighter border */
+             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+             color: var(--galaxy-text);
+             border-radius: 0.75rem; /* Match galaxy-section */
+         }
+         /* Modal Scrollbar */
+         .modal-task-list { scrollbar-width: thin; scrollbar-color: var(--galaxy-mid1) rgba(255, 255, 255, 0.05); }
+        .modal-task-list::-webkit-scrollbar { width: 8px; }
+        .modal-task-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
+        .modal-task-list::-webkit-scrollbar-thumb { background-color: var(--galaxy-mid1); border-radius: 4px; border: 2px solid rgba(255, 255, 255, 0.05); }
+        .modal-task-list::-webkit-scrollbar-thumb:hover { background-color: var(--galaxy-blue1); }
+
+         /* Modal task items */
+        .task-edit-item {
+            background-color: rgba(13, 17, 23, 0.6); /* Darker item bg */
+             border: 1px solid rgba(255, 255, 255, 0.1);
+             transition: background-color 0.2s ease, opacity 0.3s ease;
+             padding: 0.75rem; border-radius: 8px;
+        }
+         .task-edit-item:hover { background-color: rgba(13, 17, 23, 0.9); }
+         .task-edit-item[data-marked-for-deletion="true"] {
+             opacity: 0.4; /* More pronounced deletion indicator */
+             background-color: rgba(192, 57, 159, 0.1); /* Pink tint when marked */
+             pointer-events: none;
+         }
+        .task-edit-item[data-marked-for-deletion="true"] input,
+        .task-edit-item[data-marked-for-deletion="true"] select {
+             text-decoration: line-through;
+        }
+
+
+         .modal-delete-task-btn { color: var(--galaxy-pink1); background: none; border: none; padding: 0.25rem; cursor: pointer; transition: color 0.2s, transform 0.2s; }
+         .modal-delete-task-btn:hover { color: #e843cf; transform: scale(1.15);}
+         .modal-delete-task-btn[data-active="true"] { color: var(--galaxy-light2); /* Color when item is marked for deletion */ }
+
+         /* Weekly Plan Table */
+        .weekly-plan-table { border-collapse: collapse; width: 100%;}
+        .weekly-plan-table thead { background-color: rgba(255, 255, 255, 0.05); }
+        .weekly-plan-table th { color: var(--galaxy-light1); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; padding: 0.75rem; text-align: left;}
+        .weekly-plan-table td { border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: var(--galaxy-text-dim); padding: 0.75rem;}
+        .weekly-plan-table tbody tr:last-child td { border-bottom: none;}
+        .weekly-plan-table tbody tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
+         .weekly-plan-table tbody tr:hover { background-color: rgba(52, 152, 219, 0.1); }
+        /* Override text colors in table to use bright galaxy colors */
+        .weekly-plan-table .text-sky-600 { color: var(--subject-math-color) !important; font-weight: 500;}
+        .weekly-plan-table .text-emerald-600 { color: var(--subject-literature-color) !important; font-weight: 500;}
+        .weekly-plan-table .text-amber-600 { color: var(--subject-english-color) !important; font-weight: 500;}
+         .weekly-plan-table .text-violet-600 { color: var(--subject-informatics-color) !important; font-weight: 500;}
+         .weekly-plan-table .text-gray-400 { color: #8798ae !important; } /* Time hints */
+
+         /* Helper Classes */
+         .gradient-text-galaxy {
+            background: linear-gradient(135deg, var(--galaxy-blue1) 0%, var(--galaxy-pink1) 100%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            display: inline-block; /* Needed for gradient text */
+         }
+
+         /* Banner Placeholder */
+         #banner-image-area {
+            background: linear-gradient(45deg, rgba(26, 35, 58, 0.7), rgba(78, 58, 109, 0.5));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+         }
+         #banner-image-area span {
+             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+             color: var(--galaxy-light2);
+         }
+    </style>
+</head>
+<body class="text-base">
+
+    <div class="container mx-auto px-4 max-w-7xl">
+        <!-- Banner Area (Optional) -->
+        <div id="banner-image-area" class="my-6 h-48 rounded-xl flex items-center justify-center text-gray-400 shadow-inner overflow-hidden cursor-pointer relative group">
+             <!-- Content loaded by JS - Placeholder styled with CSS -->
+         </div>
+
+        <!-- Header -->
+         <header class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-2">
+             <div>
+                 <h1 class="text-3xl font-bold text-gray-100">KẾ HOẠCH ÔN THI TỐT NGHIỆP <span class="gradient-text-galaxy font-bold">2025</span></h1>
+                 <p class="text-dim mt-1 text-sm">Hệ thống quản lý học tập thông minh</p>
+             </div>
+            <div class="flex items-center space-x-3">
+                 <div class="clock-box">
+                    <div class="flex items-center">
+                         <i class="far fa-clock text-blue-400 mr-3 text-xl"></i>
+                        <div>
+                             <div class="text-xs text-dim font-medium">Thời gian VN (GMT+7)</div>
+                             <div class="text-2xl font-bold" id="current-time">00:00:00</div>
+                             <div class="text-xs" id="current-date">Thứ Hai, 01/01/2024</div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </header>
+
+        <!-- Tab Buttons -->
+        <div class="mb-6 border-b border-[rgba(255,255,255,0.15)] flex flex-wrap space-x-1"> <!-- Slightly more visible border -->
+             <button class="tab-button active" data-tab-target="tab-overview">
+                 <i class="fas fa-tachometer-alt mr-2 opacity-80"></i>Tổng quan
+             </button>
+            <button class="tab-button" data-tab-target="tab-main-content">
+                <i class="fas fa-calendar-alt mr-2 opacity-80"></i>Lịch trình & Thống kê
+            </button>
+             <button class="tab-button" data-tab-target="tab-weekly-plan">
+                 <i class="fas fa-calendar-week mr-2 opacity-80"></i>Kế hoạch tuần
+             </button>
+             <button id="settings-tab-button" class="tab-button" data-tab-target="tab-settings">
+                <i class="fas fa-cog mr-2 opacity-80"></i>Cài đặt
+             </button>
+        </div>
+
+         <!-- Tab Panels Container -->
+         <div id="tab-panels" class="galaxy-container"> <!-- Wrap panels -->
+
+            <!-- Panel 1: Overview (Progress) -->
+            <div id="tab-overview" class="tab-panel">
+                <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                     <!-- Progress Cards use .progress-card class -->
+                     <div id="progress-math" class="progress-card subject-math">
+                        <div class="flex justify-between items-center mb-3"><h3 class="font-semibold flex items-center text-sm text-gray-100"><span class="w-2.5 h-2.5 rounded-full bg-[var(--subject-math-color)] mr-2"></span> Toán học</h3><span class="progress-percent">0%</span></div>
+                         <div class="progress-bar-bg mb-2"><div class="progress-bar-inner" style="width: 0%"></div></div>
+                        <div class="flex justify-between text-xs text-dim"><span class="progress-details">0/12 CĐ</span><span>01/06/24</span></div>
+                    </div>
+                     <div id="progress-literature" class="progress-card subject-literature">
+                        <div class="flex justify-between items-center mb-3"><h3 class="font-semibold flex items-center text-sm text-gray-100"><span class="w-2.5 h-2.5 rounded-full bg-[var(--subject-literature-color)] mr-2"></span> Ngữ Văn</h3><span class="progress-percent">0%</span></div>
+                        <div class="progress-bar-bg mb-2"><div class="progress-bar-inner" style="width: 0%"></div></div>
+                        <div class="flex justify-between text-xs text-dim"><span class="progress-details">0/8 TP</span><span>01/06/24</span></div>
+                     </div>
+                    <div id="progress-english" class="progress-card subject-english">
+                         <div class="flex justify-between items-center mb-3"><h3 class="font-semibold flex items-center text-sm text-gray-100"><span class="w-2.5 h-2.5 rounded-full bg-[var(--subject-english-color)] mr-2"></span> Tiếng Anh</h3><span class="progress-percent">0%</span></div>
+                        <div class="progress-bar-bg mb-2"><div class="progress-bar-inner" style="width: 0%"></div></div>
+                        <div class="flex justify-between text-xs text-dim"><span class="progress-details">0/10 CĐ</span><span>15/05/24</span></div>
+                     </div>
+                     <div id="progress-informatics" class="progress-card subject-informatics">
+                        <div class="flex justify-between items-center mb-3"><h3 class="font-semibold flex items-center text-sm text-gray-100"><span class="w-2.5 h-2.5 rounded-full bg-[var(--subject-informatics-color)] mr-2"></span> Tin học</h3><span class="progress-percent">0%</span></div>
+                        <div class="progress-bar-bg mb-2"><div class="progress-bar-inner" style="width: 0%"></div></div>
+                        <div class="flex justify-between text-xs text-dim"><span class="progress-details">0/15 BT</span><span>01/06/24</span></div>
+                    </div>
+                 </section>
+                 <div class="galaxy-section"> <!-- Welcome message also in a section -->
+                     <h2 class="text-xl font-semibold mb-4">Chào mừng trở lại!</h2>
+                     <p class="text-dim">Đây là khu vực tổng quan tiến độ ôn tập của bạn. Hãy kiểm tra các mục tiêu và lịch trình học tập trong các tab khác nhé.</p>
+                     <p class="mt-3 text-sm">✨ <span class="font-semibold text-blue-300">Tip:</span> Giữ vững sự tập trung và hoàn thành mục tiêu mỗi ngày!</p>
+                 </div>
+            </div>
+
+            <!-- Panel 2: Main Content (Calendar, Stats, Timer, Schedule, Notes) -->
+            <div id="tab-main-content" class="tab-panel hidden">
+                <div class="flex flex-col lg:flex-row gap-6">
+                     <!-- Left Column -->
+                    <div class="lg:w-[36%] flex flex-col gap-6">
+                         <!-- Calendar -->
+                         <div class="galaxy-section"> <!-- Added class -->
+                             <div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">Lịch học tuần</h2><div class="flex space-x-1.5"><button class="btn-icon w-7 h-7 flex items-center justify-center"><i class="fas fa-chevron-left text-xs"></i></button><button class="btn-icon w-7 h-7 flex items-center justify-center"><i class="fas fa-chevron-right text-xs"></i></button></div></div>
+                             <div class="grid grid-cols-7 gap-1 mb-2 text-center text-xs font-medium text-dim"><div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div><div>CN</div></div>
+                            <div class="grid grid-cols-7 gap-1 text-center text-sm">
+                                <!-- Calendar Days -->
+                                <div class="calendar-day other-month py-1.5 rounded-full">27</div><div class="calendar-day other-month py-1.5 rounded-full">28</div>
+                                <div class="calendar-day py-1.5 rounded-full cursor-pointer">29</div><div class="calendar-day py-1.5 rounded-full cursor-pointer">30</div><div class="calendar-day py-1.5 rounded-full cursor-pointer">31</div>
+                                <div class="calendar-day active py-1.5 rounded-full cursor-pointer font-semibold">1</div><div class="calendar-day py-1.5 rounded-full cursor-pointer">2</div>
+                                <div class="calendar-day py-1.5 rounded-full cursor-pointer">3</div><div class="calendar-day py-1.5 rounded-full cursor-pointer">4</div><div class="calendar-day py-1.5 rounded-full cursor-pointer">5</div><div class="calendar-day py-1.5 rounded-full cursor-pointer">6</div><div class="calendar-day py-1.5 rounded-full cursor-pointer">7</div>
+                                <div class="calendar-day py-1.5 rounded-full cursor-pointer">8</div><div class="calendar-day py-1.5 rounded-full cursor-pointer">9</div>
+                             </div>
+                        </div>
+
+                         <!-- Weekly Stats -->
+                        <div id="weekly-stats-container" class="galaxy-section"> <!-- Added class -->
+                            <h2 class="text-lg font-semibold mb-4">Thống kê tuần</h2>
+                            <div class="space-y-3.5">
+                                <!-- Subject progress bars use galaxy colors -->
+                                <div class="subject-english">
+                                    <div class="flex justify-between mb-1 text-xs"><span class="font-medium text-gray-100">Tiếng Anh</span><span class="font-medium progress-percent weekly-stat-time">0.0h / 8h</span></div>
+                                    <div class="progress-bar-bg"><div class="progress-bar-inner weekly-stat-bar" style="width: 0%"></div></div>
+                                </div>
+                                <div class="subject-math">
+                                    <div class="flex justify-between mb-1 text-xs"><span class="font-medium text-gray-100">Toán học</span><span class="font-medium progress-percent weekly-stat-time">0.0h / 6h</span></div>
+                                    <div class="progress-bar-bg"><div class="progress-bar-inner weekly-stat-bar" style="width: 0%"></div></div>
+                                </div>
+                                <div class="subject-literature">
+                                     <div class="flex justify-between mb-1 text-xs"><span class="font-medium text-gray-100">Ngữ Văn</span><span class="font-medium progress-percent weekly-stat-time">0.0h / 5h</span></div>
+                                     <div class="progress-bar-bg"><div class="progress-bar-inner weekly-stat-bar" style="width: 0%"></div></div>
+                                </div>
+                                <div class="subject-informatics">
+                                    <div class="flex justify-between mb-1 text-xs"><span class="font-medium text-gray-100">Tin học</span><span class="font-medium progress-percent weekly-stat-time">0.0h / 4h</span></div>
+                                    <div class="progress-bar-bg"><div class="progress-bar-inner weekly-stat-bar" style="width: 0%"></div></div>
+                                 </div>
+                            </div>
+                             <div class="mt-5 p-3.5 bg-[rgba(52,152,219,0.1)] rounded-lg border border-[rgba(52,152,219,0.2)] shadow-xs">
+                                 <div class="flex items-start">
+                                     <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-[rgba(52,152,219,0.2)] rounded-full mr-3"><i class="fas fa-lightbulb text-[var(--galaxy-blue1)] text-sm"></i></div>
+                                     <div>
+                                         <p class="text-sm font-medium text-gray-100">Mẹo học tập</p>
+                                         <p class="text-xs text-dim mt-0.5">Chia nhỏ mục tiêu học tập để dễ quản lý và tạo động lực.</p>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+
+                         <!-- Timer -->
+                         <div class="galaxy-section"> <!-- Added class -->
+                            <h2 class="text-lg font-semibold mb-3">Bấm giờ học tập</h2>
+                             <div class="text-center mb-4 p-4 bg-[rgba(0,0,0,0.3)] rounded-lg shadow-inner border border-[rgba(255,255,255,0.1)]"> <!-- Timer display box -->
+                                 <div class="text-4xl font-bold mb-2 text-gray-100" id="timer-display" style="text-shadow: 0 0 5px rgba(255,255,255,0.3);">00:00:00</div>
+                                <div class="flex justify-center space-x-2.5">
+                                    <button id="start-timer" class="timer-btn btn-success px-4 text-sm flex items-center"><i class="fas fa-play mr-1.5 text-xs"></i> Bắt đầu</button>
+                                    <button id="pause-timer" class="timer-btn btn-warning px-4 text-sm flex items-center" disabled><i class="fas fa-pause mr-1.5 text-xs"></i> Tạm dừng</button>
+                                    <button id="reset-timer" class="timer-btn btn-danger px-4 text-sm flex items-center" disabled><i class="fas fa-redo mr-1.5 text-xs"></i> Đặt lại</button>
+                                 </div>
+                             </div>
+                             <div class="text-center">
+                                 <label for="subject-select" class="block text-xs text-dim mb-1">Ghi nhận thời gian cho:</label>
+                                 <select id="subject-select">
+                                    <option value="math">Toán học</option>
+                                     <option value="literature">Ngữ Văn</option>
+                                    <option value="english" selected>Tiếng Anh</option>
+                                    <option value="informatics">Tin học</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                         </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="lg:w-[64%] flex flex-col gap-6">
+                         <!-- Daily Schedule -->
+                         <div id="schedule-container" class="galaxy-section overflow-hidden"> <!-- Added class -->
+                             <div class="border-b border-[rgba(255,255,255,0.15)] pb-4 mb-4">
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                                     <h2 class="text-lg font-semibold">Lịch học ngày <span class="font-bold text-blue-400" id="schedule-date">01/06/2024</span></h2>
+                                    <div class="flex space-x-2">
+                                        <button id="add-task-btn" class="btn-primary text-xs px-3 py-1.5 flex items-center"><i class="fas fa-plus mr-1.5"></i> Thêm việc</button>
+                                         <button id="edit-schedule-in-section-btn" class="btn-secondary text-xs px-3 py-1.5 flex items-center"><i class="fas fa-edit mr-1.5"></i> Sửa lịch</button>
+                                     </div>
+                                </div>
+                             </div>
+                             <!-- Schedule Sections -->
+                            <div id="daily-schedule-sections" class="space-y-5">
+                                <!-- Morning -->
+                                <div class="schedule-section" data-section="morning">
+                                     <div class="flex items-center mb-3"><span class="w-2 h-2 bg-[#fde047] rounded-full mr-2 shadow-[0_0_5px_#fde047]"></span><h3 class="font-medium text-gray-300 text-sm">Buổi sáng</h3></div>
+                                     <div class="space-y-3 task-list">
+                                         <!-- JS loads tasks here or shows empty message -->
+                                     </div>
+                                </div>
+                                <!-- Afternoon -->
+                                 <div class="schedule-section" data-section="afternoon">
+                                    <div class="flex items-center mb-3"><span class="w-2 h-2 bg-[#fb923c] rounded-full mr-2 shadow-[0_0_5px_#fb923c]"></span><h3 class="font-medium text-gray-300 text-sm">Buổi chiều</h3></div>
+                                    <div class="space-y-3 task-list">
+                                         <!-- JS loads tasks here or shows empty message -->
+                                     </div>
+                                </div>
+                                <!-- Evening -->
+                                <div class="schedule-section" data-section="evening">
+                                    <div class="flex items-center mb-3"><span class="w-2 h-2 bg-[#a78bfa] rounded-full mr-2 shadow-[0_0_5px_#a78bfa]"></span><h3 class="font-medium text-gray-300 text-sm">Buổi tối</h3></div>
+                                    <div class="space-y-3 task-list">
+                                         <!-- JS loads tasks here or shows empty message -->
+                                    </div>
+                                 </div>
+                            </div>
+                         </div>
+
+                         <!-- Notes Section -->
+                        <div class="galaxy-section"> <!-- Added class -->
+                             <div class="flex justify-between items-center mb-3 border-b border-[rgba(255,255,255,0.15)] pb-2">
+                                <h2 class="text-lg font-semibold">Ghi chú học tập</h2>
+                                 <button id="add-note-btn" class="text-blue-400 hover:text-blue-300 flex items-center text-sm font-medium"><i class="fas fa-plus mr-1 text-xs"></i> Thêm ghi chú</button>
+                            </div>
+                            <div id="add-note-input-container" class="mb-3 hidden"><input type="text" id="new-note-input" placeholder="Nhập ghi chú mới và nhấn Enter..."></div>
+                            <div id="notes-list" class="space-y-1">
+                                <!-- JS loads notes here -->
+                            </div>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+
+            <!-- Panel 3: Weekly Plan -->
+            <div id="tab-weekly-plan" class="tab-panel hidden">
+                <div class="galaxy-section"> <!-- Added class -->
+                    <h2 class="text-lg font-semibold mb-4">Kế hoạch tuần (Ví dụ: 03/06 - 09/06/2024)</h2>
+                     <div class="overflow-x-auto rounded-lg border border-[rgba(255,255,255,0.1)]">
+                         <table class="min-w-full weekly-plan-table">
+                            <thead><tr> <th>TGian</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>T6</th><th>T7</th><th>CN</th></tr></thead>
+                            <tbody class="text-sm">
+                                 <!-- Using galaxy theme colors -->
+                                 <tr><td>04-06</td><td class="text-sky-600">Toán</td><td class="text-sky-600">Toán</td><td class="text-sky-600">Toán</td><td class="text-sky-600">Toán</td><td class="text-sky-600">Toán</td><td class="text-emerald-600">Văn</td><td class="text-emerald-600">Văn</td></tr>
+                                 <tr><td>06-12</td><td class="text-gray-400" colspan="5">Học trên trường</td><td class="text-amber-600">Anh</td><td class="text-violet-600">Tin</td></tr>
+                                 <tr><td>14-17</td><td><div class="text-sky-600">Toán <span class="text-gray-400 text-xs">(..-15:30)</span></div><div class="text-amber-600">Anh <span class="text-gray-400 text-xs">(15:30-..)</span></div></td><td class="text-amber-600">Anh</td><td class="text-emerald-600">Văn</td><td class="text-amber-600">Anh</td><td class="text-amber-600">Anh <span class="text-gray-400 text-xs">(17:30-..)</span></td><td class="text-sky-600">Toán</td><td class="text-amber-600">Anh</td></tr>
+                                <tr><td>20-22:30</td><td class="text-amber-600">Anh</td><td class="text-violet-600">Tin</td><td class="text-amber-600">Anh</td><td class="text-violet-600">Tin</td><td class="text-emerald-600">Văn</td><td class="text-violet-600">Tin</td><td class="text-sky-600">Toán</td></tr>
+                            </tbody>
+                         </table>
+                    </div>
+                     <p class="text-xs text-dim mt-4 italic">Lưu ý: Bảng kế hoạch tuần này chỉ là ví dụ tĩnh. Chức năng chỉnh sửa động chưa được thêm.</p>
+                 </div>
+             </div>
+
+             <!-- Panel 4: Settings -->
+             <div id="tab-settings" class="tab-panel hidden">
+                <div class="galaxy-section"> <!-- Added class -->
+                    <h2 class="text-xl font-semibold mb-5">Cài đặt chung</h2>
+                     <div class="space-y-6">
+                         <div>
+                            <h3 class="text-lg font-medium mb-2 text-pink-400">Đặt lại dữ liệu</h3>
+                             <p class="text-sm text-dim mb-3">Cẩn thận! Hành động này sẽ xóa dữ liệu lưu trong trình duyệt của bạn và không thể hoàn tác.</p>
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <button id="reset-progress-btn" class="flex-1 btn-danger px-4 py-2 text-sm flex items-center justify-center">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i> Đặt lại Tiến trình Môn học
+                                </button>
+                                <button id="reset-weekly-stats-btn" class="flex-1 btn-warning px-4 py-2 text-sm flex items-center justify-center">
+                                    <i class="fas fa-history mr-2"></i> Đặt lại Thống kê Tuần
+                                </button>
+                             </div>
+                         </div>
+
+                         <hr class="border-[rgba(255,255,255,0.1)] my-4">
+
+                        <div>
+                             <h3 class="text-lg font-medium mb-3 text-blue-300">Giao diện & Chỉnh sửa</h3>
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <button id="edit-schedule-button-settings" class="flex-1 btn-secondary px-4 py-2 text-sm flex items-center justify-center">
+                                     <i class="fas fa-edit mr-2"></i> Chỉnh sửa lịch học hôm nay...
+                                </button>
+                                <button id="change-banner-button" class="flex-1 btn-secondary px-4 py-2 text-sm flex items-center justify-center">
+                                     <i class="fas fa-image mr-2"></i> Đổi ảnh bìa...
+                                </button>
+                            </div>
+                         </div>
+
+                         <hr class="border-[rgba(255,255,255,0.1)] my-4">
+
+                        <div>
+                             <h3 class="text-lg font-medium mb-2 text-purple-400">Thông tin</h3>
+                             <p class="text-sm text-dim">Hệ thống quản lý ôn thi tốt nghiệp <span class="gradient-text-galaxy">2025</span>.</p>
+                             <p class="text-xs text-dim mt-1">Phiên bản: Galaxy Tabs v1.2</p>
+                        </div>
+
+                    </div>
+                 </div>
+             </div>
+
+        </div> <!-- End #tab-panels / .galaxy-container -->
+
+    </div> <!-- End .container -->
+
+
+     <!-- Settings MODAL - For editing daily schedule -->
+     <div id="settings-modal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ease-out opacity-0">
+         <div class="modal-content p-6 w-full max-w-3xl mx-auto"> <!-- Uses .modal-content style -->
+             <div class="flex justify-between items-center mb-5 border-b border-[rgba(255,255,255,0.15)] pb-3">
+                 <h2 class="text-xl font-semibold flex items-center text-gray-100">
+                     <i class="fas fa-edit text-blue-400 mr-3"></i> Chỉnh sửa Lịch học Ngày <span id="modal-schedule-date" class="ml-1 font-bold text-blue-300"></span>
+                 </h2>
+                 <button id="close-settings-modal" class="text-gray-500 hover:text-gray-300 transition"><i class="fas fa-times text-xl"></i></button>
+             </div>
+
+             <div id="modal-task-list" class="max-h-[60vh] overflow-y-auto pr-3 space-y-3 mb-4 modal-task-list">
+                 <!-- Modal tasks loaded here -->
+                 <p class="text-center text-dim italic py-5">Đang tải hoặc không có mục nào để chỉnh sửa...</p>
+             </div>
+
+            <div class="mt-6 flex justify-end space-x-3 pt-4 border-t border-[rgba(255,255,255,0.15)]">
+                <button id="close-settings-modal-btn" class="btn-secondary px-5 py-2 text-sm font-medium">Hủy</button>
+                <button id="save-settings-modal-btn" class="btn-primary px-5 py-2 text-sm font-medium"><i class="fas fa-save mr-1.5"></i> Lưu thay đổi</button>
+             </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONSTANTS & DOM ELEMENTS ---
+        const LS_PREFIX = 'galaxyStudy2025_'; // Prefix for local storage keys
+        const LS_PROGRESS_KEY = LS_PREFIX + 'progress';
+        const LS_NOTES_KEY = LS_PREFIX + 'notes';
+        const LS_BANNER_KEY = LS_PREFIX + 'banner';
+        const LS_TASKS_KEY = LS_PREFIX + 'tasks_'; // Add date, e.g., tasks_2024-06-01
+        const LS_WEEKLY_STATS_KEY = LS_PREFIX + 'weeklyStats'; // Key for weekly stats
+
+        // Core elements
+         const currentTimeEl = document.getElementById('current-time');
+        const currentDateEl = document.getElementById('current-date');
+        const scheduleDateEl = document.getElementById('schedule-date');
+        const bannerArea = document.getElementById('banner-image-area');
+
+        // Tab elements
+         const tabButtons = document.querySelectorAll('.tab-button');
+         const tabPanelsContainer = document.getElementById('tab-panels');
+         const settingsTabButton = document.getElementById('settings-tab-button'); // Specific button
+
+         // Progress Overview elements
+         // (Individual progress elements accessed dynamically inside functions)
+
+        // Main Content Panel Elements
+         const timerDisplay = document.getElementById('timer-display');
+         const startBtn = document.getElementById('start-timer');
+         const pauseBtn = document.getElementById('pause-timer');
+        const resetBtn = document.getElementById('reset-timer');
+        const timerSubjectSelect = document.getElementById('subject-select');
+        const scheduleContainer = document.getElementById('schedule-container');
+        const dailyScheduleSections = document.getElementById('daily-schedule-sections');
+        const addTaskBtn = document.getElementById('add-task-btn');
+         const editScheduleInSectionBtn = document.getElementById('edit-schedule-in-section-btn'); // New edit button in section
+         const notesListEl = document.getElementById('notes-list');
+         const addNoteBtn = document.getElementById('add-note-btn');
+         const addNoteInputContainer = document.getElementById('add-note-input-container');
+         const newNoteInput = document.getElementById('new-note-input');
+         const weeklyStatsContainer = document.getElementById('weekly-stats-container');
+
+         // Settings Panel/Modal Elements
+        const resetProgressBtn = document.getElementById('reset-progress-btn');
+        const resetWeeklyStatsBtn = document.getElementById('reset-weekly-stats-btn');
+        const editScheduleBtnSettings = document.getElementById('edit-schedule-button-settings'); // Button in Settings Tab
+         const changeBannerBtn = document.getElementById('change-banner-button');
+         // const resetAllDataBtn = document.getElementById('reset-all-data-btn'); // If you add the nuclear option
+
+         const settingsModal = document.getElementById('settings-modal');
+         const closeModalBtn = document.getElementById('close-settings-modal');
+         const closeModalBtn2 = document.getElementById('close-settings-modal-btn');
+         const saveModalBtn = document.getElementById('save-settings-modal-btn');
+        const modalTaskListEl = document.getElementById('modal-task-list');
+         const modalScheduleDateEl = document.getElementById('modal-schedule-date');
+
+        // --- DATA MAPPING ---
+         const subjectDisplayNames = { math: 'Toán học', literature: 'Ngữ Văn', english: 'Tiếng Anh', informatics: 'Tin học', other: 'Khác' };
+         const subjectColors = { // For potential future use in JS if needed
+             math: 'var(--subject-math-color)',
+             literature: 'var(--subject-literature-color)',
+             english: 'var(--subject-english-color)',
+             informatics: 'var(--subject-informatics-color)',
+             other: 'var(--subject-other-color)'
+         };
+
+
+        // --- INITIAL DATA (DEFAULTS) ---
+        const defaultProgress = { math: { percent: 0, details: '0/12 CĐ' }, literature: { percent: 0, details: '0/8 TP' }, english: { percent: 0, details: '0/10 CĐ' }, informatics: { percent: 0, details: '0/15 BT' } };
+        const defaultNotes = [ ]; // Start with no notes
+        const defaultTasks = { // Empty structure is better default
+             morning: [], afternoon: [], evening: []
+        };
+         // Default weekly stats structure
+        const defaultWeeklyStats = {
+             english: { current: 0, target: 8 }, math: { current: 0, target: 6 }, literature: { current: 0, target: 5 }, informatics: { current: 0, target: 4 }
+         };
+
+         // --- UTILITY FUNCTIONS ---
+        const loadData = (key, defaultValue) => { try { const data = localStorage.getItem(key); return data ? JSON.parse(data) : defaultValue; } catch (e) { console.error(`Error loading LS key "${key}":`, e); return defaultValue; } };
+         const saveData = (key, data) => { try { localStorage.setItem(key, JSON.stringify(data)); } catch (e) { console.error(`Error saving LS key "${key}":`, e); } };
+        function getTodayDateKey() { const now = new Date(); const year = now.getFullYear(); const month = String(now.getMonth() + 1).padStart(2, '0'); const day = String(now.getDate()).padStart(2, '0'); return `${year}-${month}-${day}`; } // YYYY-MM-DD format
+         function getTodayDisplayDate() { const now = new Date(); return new Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(now); }
+         function formatTime(totalSeconds) { const h = Math.floor(totalSeconds / 3600); const m = Math.floor((totalSeconds % 3600) / 60); const s = totalSeconds % 60; return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`; }
+         const deepClone = (obj) => JSON.parse(JSON.stringify(obj)); // Simple deep clone for our data
+
+
+        // --- STATE VARIABLES ---
+         let currentProgress = loadData(LS_PROGRESS_KEY, deepClone(defaultProgress));
+         let currentNotes = loadData(LS_NOTES_KEY, deepClone(defaultNotes));
+         let currentTasks = loadData(LS_TASKS_KEY + getTodayDateKey(), deepClone(defaultTasks)); // Load today's tasks
+        let currentWeeklyStats = loadData(LS_WEEKLY_STATS_KEY, deepClone(defaultWeeklyStats));
+
+
+        // --- TABS FUNCTIONALITY ---
+         tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Stop if already active
+                if(button.classList.contains('active')) return;
+
+                 tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabPanelsContainer.querySelectorAll(':scope > .tab-panel').forEach(panel => panel.classList.add('hidden')); // Select direct children
+
+                 button.classList.add('active');
+                const targetPanelId = button.getAttribute('data-tab-target');
+                 const targetPanel = document.getElementById(targetPanelId);
+                if (targetPanel) {
+                    targetPanel.classList.remove('hidden');
+                    // Refresh content when certain tabs are activated
+                     if(targetPanelId === 'tab-overview') updateProgressBars();
+                     if(targetPanelId === 'tab-main-content') { loadAndRenderTasks(); renderNotes(); updateWeeklyStatsDisplay(); updateTimerDisplay();}
+                     // if(targetPanelId === 'tab-weekly-plan') { /* potentially load/render dynamic plan */ }
+                 } else { console.error(`Tab panel with ID "${targetPanelId}" not found.`); }
+            });
+        });
+
+        // --- DATE & TIME ---
+         function updateDateTime() {
+            const now = new Date();
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Ho_Chi_Minh' };
+            const dateOptions = { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh' };
+             try {
+                 if (currentTimeEl) currentTimeEl.textContent = new Intl.DateTimeFormat('en-GB', timeOptions).format(now); // Use en-GB for consistent HH:MM:SS
+                 if (currentDateEl) currentDateEl.textContent = new Intl.DateTimeFormat('vi-VN', dateOptions).format(now).replace(/,/g, '');
+                 if (scheduleDateEl) scheduleDateEl.textContent = getTodayDisplayDate();
+            } catch (e) { console.error("Error updating date/time:", e); }
+         }
+        setInterval(updateDateTime, 1000);
+
+        // --- PROGRESS BARS ---
+        function updateProgressBars() {
+            // Only update if overview tab is visible
+            if(!document.getElementById('tab-overview')?.classList.contains('hidden')) {
+                 for (const subject in currentProgress) {
+                    const progressData = currentProgress[subject] || { percent: 0, details: 'N/A' };
+                    const container = document.getElementById(`progress-${subject}`);
+                     if (container) {
+                        const percentEl = container.querySelector('.progress-percent');
+                        const barEl = container.querySelector('.progress-bar-inner');
+                        const detailsEl = container.querySelector('.progress-details');
+                         if (percentEl) percentEl.textContent = `${progressData.percent}%`;
+                        if (barEl) barEl.style.width = `${progressData.percent}%`;
+                         if (detailsEl) detailsEl.textContent = progressData.details;
+                     }
+                }
+            }
+        }
+        function resetProgress() {
+            if (confirm('⚠️ Đặt lại toàn bộ tiến trình các môn về 0%? Hành động này không thể hoàn tác.')) {
+                currentProgress = deepClone(defaultProgress);
+                 saveData(LS_PROGRESS_KEY, currentProgress);
+                 updateProgressBars(); // Update display
+                alert('Đã đặt lại tiến trình học tập.');
+            }
+         }
+
+        // --- WEEKLY STATS ---
+         function updateWeeklyStatsDisplay() {
+             // Only update if main content tab is visible
+             if (!weeklyStatsContainer || document.getElementById('tab-main-content')?.classList.contains('hidden') ) return;
+             for (const subject in currentWeeklyStats) {
+                 const stats = currentWeeklyStats[subject];
+                 const subjectContainer = weeklyStatsContainer.querySelector(`.subject-${subject}`);
+                 if (subjectContainer) {
+                    const timeEl = subjectContainer.querySelector('.weekly-stat-time');
+                     const barEl = subjectContainer.querySelector('.weekly-stat-bar');
+                    if (timeEl) timeEl.textContent = `${(stats.current || 0).toFixed(1)}h / ${stats.target}h`; // Default to 0 if undefined
+                    if (barEl && stats.target > 0) { const percentage = Math.min(100, ((stats.current || 0) / stats.target) * 100); barEl.style.width = `${percentage}%`; }
+                    else if (barEl) { barEl.style.width = '0%'; }
+                }
+             }
+         }
+         function resetWeeklyStats() {
+            if (confirm('❓ Đặt lại thống kê giờ học tuần này về 0?')) {
+                 currentWeeklyStats = deepClone(defaultWeeklyStats);
+                saveData(LS_WEEKLY_STATS_KEY, currentWeeklyStats);
+                 updateWeeklyStatsDisplay();
+                alert('Đã đặt lại thống kê giờ học tuần.');
+            }
+        }
+        function addTimeToWeeklyStats(subject, hoursToAdd) {
+            if (!subject || subject === 'other') return;
+             if (currentWeeklyStats[subject]) {
+                currentWeeklyStats[subject].current = (currentWeeklyStats[subject].current || 0) + hoursToAdd;
+                saveData(LS_WEEKLY_STATS_KEY, currentWeeklyStats);
+                updateWeeklyStatsDisplay();
+             } else {
+                 console.warn("Subject not found in weekly stats:", subject)
+            }
+         }
+
+        // --- TIMER ---
+         let timerInterval = null; let seconds = 0; let isRunning = false;
+        function updateTimerDisplay() { if (timerDisplay) timerDisplay.textContent = formatTime(seconds); }
+         startBtn?.addEventListener('click', () => {
+             if (!isRunning) {
+                 isRunning = true; startBtn.disabled = true; pauseBtn.disabled = false; resetBtn.disabled = false;
+                 startBtn.classList.add('btn-disabled'); pauseBtn.classList.remove('btn-disabled'); resetBtn.classList.remove('btn-disabled');
+                 clearInterval(timerInterval); timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000);
+            } });
+         pauseBtn?.addEventListener('click', () => {
+            if (isRunning) {
+                 isRunning = false; startBtn.disabled = false; pauseBtn.disabled = true;
+                 startBtn.classList.remove('btn-disabled'); pauseBtn.classList.add('btn-disabled');
+                 clearInterval(timerInterval); timerInterval = null;
+            }
+         });
+        resetBtn?.addEventListener('click', () => {
+            if (seconds > 0 && confirm(`Dừng và ghi nhận ${formatTime(seconds)} giờ học?`)) {
+                isRunning = false;
+                const stoppedSeconds = seconds;
+                 const selectedSubject = timerSubjectSelect?.value;
+                 seconds = 0; updateTimerDisplay();
+                clearInterval(timerInterval); timerInterval = null;
+                 startBtn.disabled = false; pauseBtn.disabled = true; resetBtn.disabled = true;
+                 startBtn.classList.remove('btn-disabled'); pauseBtn.classList.add('btn-disabled'); resetBtn.classList.add('btn-disabled');
+
+                // Log time to weekly stats
+                 const hoursLogged = stoppedSeconds / 3600;
+                if (hoursLogged > 0.001 && selectedSubject && selectedSubject !== 'other') { // Check if time > 0 approx
+                     addTimeToWeeklyStats(selectedSubject, hoursLogged);
+                     alert(`Đã dừng & ghi nhận ${hoursLogged.toFixed(2)} giờ cho môn ${subjectDisplayNames[selectedSubject] || selectedSubject}.`);
+                 } else if (hoursLogged > 0.001) {
+                     alert(`Đã dừng đồng hồ (${formatTime(stoppedSeconds)}). Thời gian chưa được ghi vào môn cụ thể.`);
+                 }
+            } else if (seconds === 0) { alert("Đồng hồ chưa chạy."); }
+         });
+
+        // --- TASKS (Schedule) ---
+        function createTaskElement(task) {
+             const card = document.createElement('div');
+             // Use galaxy theme classes for subject cards
+             card.className = `subject-card subject-${task.subject || 'other'} p-3 ${task.completed ? 'completed' : ''}`; // p-3 slightly smaller
+             card.dataset.taskId = task.id;
+             const iconClass = task.completed ? 'fas fa-check-circle text-green-500' : 'far fa-circle text-gray-500 hover:text-green-400'; // Use far fa-circle
+
+             card.innerHTML = `
+                <div class="flex justify-between items-start gap-2">
+                    <div class="flex-1 mr-2">
+                        <div class="flex items-center mb-1 gap-x-2 gap-y-1 flex-wrap">
+                             <h4 class="subject-title font-semibold text-sm">${subjectDisplayNames[task.subject] || task.subject || 'Không rõ'}</h4>
+                            ${task.tag ? `<span class="subject-tag">${task.tag}</span>` : ''}
+                        </div>
+                        <p class="task-description text-sm mt-1">${task.description || ''}</p>
+                        <div class="time-info flex items-center flex-wrap mt-1.5 text-xs gap-x-2 gap-y-0.5">
+                            <span class="flex items-center"><i class="far fa-clock mr-1"></i><span class="task-time">${task.time || '--:--'}</span></span>
+                             <span class="text-gray-700 hidden sm:inline mx-1">•</span>
+                            <span class="flex items-center"><i class="far fa-calendar mr-1"></i><span class="task-date">${task.date || getTodayDisplayDate()}</span></span>
+                        </div>
+                     </div>
+                    <button class="complete-btn btn-icon p-1.5 shrink-0 mt-0.5" data-task-id="${task.id}" title="${task.completed ? 'Đánh dấu chưa hoàn thành' : 'Đánh dấu hoàn thành'}">
+                        <i class="${iconClass} text-lg transition-colors duration-200"></i>
+                    </button>
+                </div>
+            `;
+             const completeButton = card.querySelector('.complete-btn');
+             completeButton?.addEventListener('click', () => toggleTaskComplete(task.id));
+            return card;
+         }
+        function renderTasks(tasksData) {
+            if (!dailyScheduleSections) return;
+             const emptyMsg = (section) => `<p class="text-sm text-dim italic px-4 py-2">Chưa có lịch trình cho buổi ${section === 'morning' ? 'sáng' : section === 'afternoon' ? 'chiều' : 'tối'}.</p>`;
+             dailyScheduleSections.querySelectorAll('.task-list').forEach(list => list.innerHTML = emptyMsg(list.closest('.schedule-section')?.dataset.section)); // Clear with default msg
+
+            let totalTasksRendered = 0;
+             for (const sectionKey in tasksData) {
+                 const sectionDiv = dailyScheduleSections.querySelector(`.schedule-section[data-section="${sectionKey}"] .task-list`);
+                if (sectionDiv && Array.isArray(tasksData[sectionKey]) && tasksData[sectionKey].length > 0) {
+                     sectionDiv.innerHTML = ''; // Clear default message if tasks exist
+                     // Sort tasks by time within section before rendering
+                     tasksData[sectionKey].sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+                     tasksData[sectionKey].forEach(task => {
+                         if (task && task.id) { // Ensure task is valid
+                             const taskEl = createTaskElement(task);
+                             sectionDiv.appendChild(taskEl);
+                             totalTasksRendered++;
+                         }
+                     });
+                }
+            }
+        }
+        function loadAndRenderTasks() {
+            const todayKey = getTodayDateKey();
+            currentTasks = loadData(LS_TASKS_KEY + todayKey, deepClone(defaultTasks));
+             renderTasks(currentTasks);
+         }
+        function saveTasks() { const todayKey = getTodayDateKey(); saveData(LS_TASKS_KEY + todayKey, currentTasks); }
+        function findTaskById(taskId) {
+            if (!taskId || !currentTasks) return null;
+            for (const section of ['morning', 'afternoon', 'evening']) {
+                if (currentTasks[section]) {
+                    const task = currentTasks[section].find(t => t && t.id === taskId); // Added check for t existing
+                    if (task) return { task, section };
+                }
+            }
+            return null;
+         }
+        function toggleTaskComplete(taskId) {
+            const result = findTaskById(taskId);
+            if (result) {
+                 result.task.completed = !result.task.completed; saveTasks(); loadAndRenderTasks(); // Re-render immediately
+
+                // Basic Progress Update Example (Adjust logic as needed)
+                 const change = result.task.completed ? 5 : -5; // Example: +/- 5% per task
+                if (result.task.subject && currentProgress[result.task.subject]) {
+                    let newPercent = currentProgress[result.task.subject].percent + change;
+                    currentProgress[result.task.subject].percent = Math.max(0, Math.min(100, newPercent));
+                    // Maybe update details too? For now, just percent.
+                    saveData(LS_PROGRESS_KEY, currentProgress);
+                    updateProgressBars(); // Update overview bars if visible
+                 }
+            } else { console.warn("Task not found for completion toggle:", taskId); }
+         }
+
+        // --- NOTES ---
+        function renderNotes() {
+             if (!notesListEl) return;
+            notesListEl.innerHTML = '';
+            if (!currentNotes || currentNotes.length === 0) { notesListEl.innerHTML = '<p class="text-sm text-dim italic py-4 text-center">Chưa có ghi chú nào.</p>'; return; }
+            // Sort notes: incomplete first, then by newest ID
+             currentNotes.sort((a, b) => (a.completed - b.completed) || ((b.id || 0) - (a.id || 0)));
+            currentNotes.forEach(note => {
+                 if (!note || !note.id) return; // Skip invalid notes
+                 const noteEl = document.createElement('div');
+                noteEl.className = `note-item flex items-start group ${note.completed ? 'opacity-60' : ''}`;
+                noteEl.dataset.noteId = note.id;
+                const subjClass = note.subject ? `subject-${note.subject}` : '';
+                noteEl.innerHTML = `
+                    <input type="checkbox" class="note-checkbox mt-1 mr-3 flex-shrink-0 rounded h-4 w-4 cursor-pointer" ${note.completed ? 'checked' : ''}>
+                    <div class="flex-1 ${subjClass}">
+                         <p class="note-text text-sm leading-snug ${note.completed ? 'line-through' : ''}">${note.text || ''}</p>
+                        <div class="flex items-center flex-wrap mt-1.5 text-xs text-gray-400 space-x-3 gap-y-1">
+                            ${note.subject ? `<span class="subject-tag ${note.subject}">${subjectDisplayNames[note.subject] || note.subject}</span>` : ''}
+                            <span class="flex items-center"><i class="far fa-calendar-alt mr-1 opacity-70"></i>${note.date || 'Không rõ'}</span>
+                        </div>
+                    </div>
+                    <button class="note-delete-btn ml-2 text-lg p-1 leading-none -mt-1" title="Xóa ghi chú"><i class="fas fa-times-circle"></i></button>
+                 `;
+                const checkbox = noteEl.querySelector('.note-checkbox');
+                 const deleteBtn = noteEl.querySelector('.note-delete-btn');
+                 checkbox?.addEventListener('change', () => toggleNoteComplete(note.id, checkbox.checked));
+                deleteBtn?.addEventListener('click', () => { if (confirm(`Xóa ghi chú: "${note.text.substring(0, 30)}..."?`)) deleteNote(note.id); });
+                notesListEl.appendChild(noteEl);
+             });
+        }
+         function addNote() {
+            const text = newNoteInput.value.trim();
+             if (text && currentNotes) {
+                 const now = new Date(); const noteId = now.getTime(); // Use timestamp as simple unique ID
+                const newNote = { id: noteId, text: text, completed: false, subject: detectSubjectFromText(text), date: getTodayDisplayDate() };
+                 currentNotes.push(newNote); saveData(LS_NOTES_KEY, currentNotes); renderNotes();
+                 newNoteInput.value = ''; addNoteInputContainer.classList.add('hidden');
+            } }
+        function detectSubjectFromText(text) { const lt = text.toLowerCase(); if (lt.includes('toán')) return 'math'; if (lt.includes('văn')) return 'literature'; if (lt.includes('anh')) return 'english'; if (lt.includes('tin')) return 'informatics'; return null; } // Return null if no keyword
+         function deleteNote(noteId) { currentNotes = currentNotes.filter(n => n && n.id !== noteId); saveData(LS_NOTES_KEY, currentNotes); renderNotes(); } // Ensure n exists
+         function toggleNoteComplete(noteId, isChecked) { const idx = currentNotes.findIndex(n => n && n.id === noteId); if (idx > -1) { currentNotes[idx].completed = isChecked; saveData(LS_NOTES_KEY, currentNotes); renderNotes(); } } // Re-render to re-sort
+         addNoteBtn?.addEventListener('click', () => { addNoteInputContainer.classList.toggle('hidden'); if (!addNoteInputContainer.classList.contains('hidden')) newNoteInput.focus(); });
+        newNoteInput?.addEventListener('keypress', (e) => { if (e.key === 'Enter') addNote(); });
+
+
+        // --- MODAL (Schedule Editing) ---
+        function openModal() {
+             if (!settingsModal || !modalTaskListEl) return;
+             modalTaskListEl.innerHTML = ''; // Clear
+             if (modalScheduleDateEl) modalScheduleDateEl.textContent = getTodayDisplayDate();
+
+            const todayKey = getTodayDateKey();
+            const tasksForModal = deepClone(loadData(LS_TASKS_KEY + todayKey, defaultTasks));
+             // Flatten tasks from all sections into one array
+             const flatTasks = Object.entries(tasksForModal).reduce((acc, [section, tasksInSection]) => {
+                 tasksInSection.forEach(task => { if(task && task.id) acc.push({ ...task, originalSection: section }); }); // Add original section info
+                 return acc;
+             }, []);
+
+             if (flatTasks.length === 0) {
+                modalTaskListEl.innerHTML = '<p class="text-center text-dim italic p-4">Không có lịch học nào cho ngày này để chỉnh sửa.</p>';
+            } else {
+                 // Sort tasks primarily by time for modal display
+                 flatTasks.sort((a,b) => (a.time || "99:99").localeCompare(b.time || "99:99"));
+
+                 flatTasks.forEach(task => {
+                     const modalItem = document.createElement('div');
+                     modalItem.className = 'task-edit-item flex flex-wrap items-center gap-x-3 gap-y-2'; // Adjusted gap
+                     modalItem.dataset.taskId = task.id;
+                    modalItem.dataset.originalSection = task.originalSection; // Store original section
+                    modalItem.innerHTML = `
+                        <div class="w-full sm:w-auto flex items-center gap-2 grow-[2] min-w-[200px]"> <!-- Input group 1 -->
+                             <input type="text" value="${task.time || ''}" class="modal-task-time border-gray-600 rounded px-2 py-1 text-sm w-24" placeholder="HH:MM">
+                            <select class="modal-task-subject border-gray-600 rounded px-2 py-1 text-sm flex-1">
+                                ${Object.entries(subjectDisplayNames).map(([key, name]) => `<option value="${key}" ${task.subject === key ? 'selected' : ''}>${name}</option>`).join('')}
+                            </select>
+                         </div>
+                        <div class="w-full sm:w-auto flex items-center gap-2 grow-[3] min-w-[250px]"> <!-- Input group 2 -->
+                             <input type="text" value="${task.tag || ''}" class="modal-task-tag border-gray-600 rounded px-2 py-1 text-sm w-24" placeholder="Tag (vd: Đề 1)">
+                            <input type="text" value="${task.description || ''}" class="modal-task-description flex-grow border-gray-600 rounded px-2 py-1 text-sm" placeholder="Nội dung học...">
+                         </div>
+                        <button class="modal-delete-task-btn ml-auto sm:ml-1" title="Đánh dấu xóa"><i class="fas fa-trash-alt text-lg"></i></button>
+                    `;
+                    modalTaskListEl.appendChild(modalItem);
+                });
+            }
+             settingsModal.classList.remove('hidden', 'opacity-0');
+        }
+         function closeModal() { if (settingsModal) { settingsModal.classList.add('opacity-0'); setTimeout(() => settingsModal.classList.add('hidden'), 300); } }
+         function deleteTaskFromModalUI(buttonElement) {
+            const itemToDelete = buttonElement.closest('.task-edit-item');
+            if (itemToDelete) {
+                const isMarked = itemToDelete.dataset.markedForDeletion === 'true';
+                 itemToDelete.dataset.markedForDeletion = isMarked ? 'false' : 'true'; // Toggle dataset attribute
+                 itemToDelete.classList.toggle('opacity-40', !isMarked); // Use class for opacity toggle
+                 itemToDelete.classList.toggle('bg-pink-900/30', !isMarked); // Use class for bg toggle
+                 // Disable inputs when marked
+                 itemToDelete.querySelectorAll('input, select').forEach(el => el.disabled = !isMarked);
+
+                 buttonElement.title = isMarked ? "Đánh dấu xóa" : "Hủy xóa";
+                 buttonElement.classList.toggle('text-[var(--galaxy-light2)]', !isMarked); // Toggle delete button color
+                 buttonElement.classList.toggle('text-[var(--galaxy-pink1)]', isMarked);
+             }
+         }
+        function saveModalChanges() {
+            let reconstructedTasks = { morning: [], afternoon: [], evening: [] };
+            const todayKey = getTodayDateKey();
+             // Load the *current* state just before saving to preserve completion status accurately
+            const currentTasksBeforeSave = loadData(LS_TASKS_KEY + todayKey, deepClone(defaultTasks));
+
+            const modalItems = modalTaskListEl.querySelectorAll('.task-edit-item');
+            modalItems.forEach(item => {
+                if (item.dataset.markedForDeletion === 'true') return; // Skip deleted items
+
+                 const taskId = item.dataset.taskId;
+                const newTime = item.querySelector('.modal-task-time')?.value.trim() || '';
+                const newSubject = item.querySelector('.modal-task-subject')?.value || 'other';
+                const newTag = item.querySelector('.modal-task-tag')?.value.trim() || '';
+                const newDescription = item.querySelector('.modal-task-description')?.value.trim() || '';
+
+                // --- Smart section placement based on time ---
+                 let section = 'evening'; // Default
+                 if (newTime) {
+                    const hourMatch = newTime.match(/^(\d{1,2})/); // Match first 1 or 2 digits
+                    if (hourMatch) {
+                        const hour = parseInt(hourMatch[1], 10);
+                        if (!isNaN(hour)) {
+                            if (hour < 12) section = 'morning';
+                             else if (hour < 18) section = 'afternoon';
+                         }
+                    }
+                 } else {
+                     // If no time, maybe use original section? Or default to evening?
+                     section = item.dataset.originalSection || 'evening';
+                 }
+
+                // --- Preserve completion status ---
+                 let isCompleted = false;
+                 // Find the task in the pre-save state
+                 for (const sec in currentTasksBeforeSave) {
+                     const found = currentTasksBeforeSave[sec].find(t => t && t.id === taskId);
+                     if (found) {
+                         isCompleted = found.completed;
+                         break;
+                     }
+                 }
+
+                 // Reconstruct task object
+                 const updatedTask = {
+                     id: taskId, time: newTime, subject: newSubject, tag: newTag, description: newDescription, date: getTodayDisplayDate(), completed: isCompleted
+                 };
+
+                 // Add to the determined section
+                 reconstructedTasks[section].push(updatedTask);
+             });
+
+            // Sort tasks within each reconstructed section by time
+            // for (const section in reconstructedTasks) { reconstructedTasks[section].sort((a, b) => (a.time || '').localeCompare(b.time || '')); }
+
+             // Save the completely reconstructed task list
+            saveData(LS_TASKS_KEY + todayKey, reconstructedTasks);
+             currentTasks = reconstructedTasks; // Update in-memory state
+             loadAndRenderTasks(); // Re-render the main schedule display
+             closeModal();
+            alert('Đã lưu thay đổi lịch học.');
+         }
+
+        // Modal event listeners
+        editScheduleBtnSettings?.addEventListener('click', openModal);
+        editScheduleInSectionBtn?.addEventListener('click', openModal);
+        closeModalBtn?.addEventListener('click', closeModal);
+        closeModalBtn2?.addEventListener('click', closeModal);
+         saveModalBtn?.addEventListener('click', saveModalChanges);
+         settingsModal?.addEventListener('click', (e) => { if (e.target === settingsModal) closeModal(); }); // Backdrop
+        modalTaskListEl?.addEventListener('click', (event) => { // Delegate delete toggle clicks
+             const deleteButton = event.target.closest('.modal-delete-task-btn');
+            if (deleteButton) { deleteTaskFromModalUI(deleteButton); } // Call the toggle function
+         });
+
+
+        // --- ADD NEW TASK ---
+        addTaskBtn?.addEventListener('click', () => {
+            const newTask = { id: `task-${Date.now()}`, subject: 'other', tag: '', description: '', time: '', date: getTodayDisplayDate(), completed: false };
+             let targetSection = 'evening'; const currentHour = new Date().getHours();
+             if (currentHour < 12) targetSection = 'morning'; else if (currentHour < 18) targetSection = 'afternoon';
+
+             if (currentTasks && currentTasks[targetSection]) {
+                // Add to the beginning of the section array
+                currentTasks[targetSection].unshift(newTask);
+                saveTasks();
+                 // Render immediately before opening modal
+                 loadAndRenderTasks();
+
+                 // Open modal to edit the new task
+                 setTimeout(() => {
+                     openModal();
+                    // Optional: Highlight the newly added item in the modal (more complex)
+                    // const newItemInModal = modalTaskListEl.querySelector(`.task-edit-item[data-task-id="${newTask.id}"]`);
+                    // if (newItemInModal) {
+                    //     newItemInModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    //     newItemInModal.style.boxShadow = '0 0 10px var(--galaxy-blue1)';
+                    //     setTimeout(() => newItemInModal.style.boxShadow = '', 2500);
+                    //     newItemInModal.querySelector('.modal-task-time')?.focus(); // Focus first editable field
+                    // }
+                 }, 50); // Short delay ensures rendering finishes
+             } else { console.error("Could not add task, target section invalid:", targetSection); }
+        });
+
+
+        // --- BANNER ---
+        function loadBanner() {
+            if (!bannerArea) return;
+            const savedImage = loadData(LS_BANNER_KEY, null); bannerArea.innerHTML = ''; // Clear
+            if (savedImage) {
+                const img = document.createElement('img'); img.src = savedImage; img.className = "w-full h-full object-cover absolute inset-0 z-0"; img.alt = "Banner"; bannerArea.appendChild(img); // Position absolute
+                 const removeBtn = document.createElement('button'); removeBtn.innerHTML = '<i class="fas fa-times"></i>'; removeBtn.className = 'absolute top-2 right-2 bg-black/60 text-white rounded-full w-6 h-6 text-xs hover:bg-red-600/80 transition flex items-center justify-center z-10'; removeBtn.title = "Xóa ảnh bìa"; removeBtn.onclick = (e) => { e.stopPropagation(); if (confirm("Xóa ảnh bìa?")) { localStorage.removeItem(LS_BANNER_KEY); loadBanner(); } }; bannerArea.appendChild(removeBtn);
+             } else { bannerArea.innerHTML = '<span class="text-lg italic text-[var(--galaxy-light2)] group-hover:opacity-70 transition-opacity z-10 relative">Nhấn để thêm ảnh bìa</span>'; } // Add z-index to placeholder text
+         }
+        const handleBannerClick = (event) => {
+             if (event.target.closest('button')) return; // Ignore remove button
+            const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*'; input.onchange = e => {
+                 const file = e.target.files[0]; if (!file) return;
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader(); reader.onload = function(readerEvent) {
+                        const imageUrl = readerEvent.target.result; if (imageUrl.length < 2 * 1024 * 1024) { // Check size ~2MB limit for LS
+                            saveData(LS_BANNER_KEY, imageUrl); loadBanner();
+                        } else { alert('Lỗi: Ảnh quá lớn (tối đa ~2MB). Vui lòng chọn ảnh nhỏ hơn.'); }
+                    };
+                    reader.onerror = () => alert('Lỗi đọc tệp hình ảnh.');
+                    reader.readAsDataURL(file);
+                 } else { alert('Vui lòng chọn tệp hình ảnh (JPG, PNG, GIF, WebP).'); } };
+            input.click();
+        };
+        bannerArea?.addEventListener('click', handleBannerClick);
+         changeBannerBtn?.addEventListener('click', handleBannerClick);
+
+         // --- EVENT LISTENERS (Settings Tab Buttons) ---
+         resetProgressBtn?.addEventListener('click', resetProgress);
+         resetWeeklyStatsBtn?.addEventListener('click', resetWeeklyStats);
+
+
+         // --- INITIALIZATION ---
+         document.addEventListener('DOMContentLoaded', () => {
+            updateDateTime();       // Set clock
+            loadBanner();           // Load banner
+
+            // Initialize data for the default active tab (Overview)
+            updateProgressBars();
+
+             // Load other data necessary for potential immediate interaction or display
+            loadAndRenderTasks();   // Needed for modal even if tab isn't active initially
+            renderNotes();
+             updateWeeklyStatsDisplay();
+             updateTimerDisplay();   // Initial timer 00:00:00
+
+             // Set initial disabled states for timer buttons
+             if (pauseBtn) { pauseBtn.classList.add('btn-disabled'); pauseBtn.disabled = true; }
+             if (resetBtn) { resetBtn.classList.add('btn-disabled'); resetBtn.disabled = true; }
+
+            // Activate the default tab's content immediately
+             const defaultTab = document.querySelector('.tab-button.active');
+            const defaultPanelId = defaultTab?.getAttribute('data-tab-target');
+            if (defaultPanelId) {
+                 const defaultPanel = document.getElementById(defaultPanelId);
+                 if(defaultPanel) defaultPanel.classList.remove('hidden');
+            } else {
+                // Fallback if no active tab found somehow
+                document.getElementById('tab-overview')?.classList.remove('hidden');
+                document.querySelector('.tab-button[data-tab-target="tab-overview"]')?.classList.add('active');
+            }
+
+        });
+    </script>
+
+</body>
+</html>
